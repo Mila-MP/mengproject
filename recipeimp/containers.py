@@ -3,6 +3,3 @@ class Container:
         self.name = name
         self.volume = volume
         self.content = list()
-
-    # def add_sample(self, sample: samp.Sample):
-    #     self.content.append(sample)

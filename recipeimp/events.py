@@ -1,34 +1,34 @@
+from abc import ABC, abstractmethod
+
 from . import containers as cont
 from . import sample as samp
 
 
-class Event:
+class Event(ABC):
     def __init__(self):
         self.status = "instantiated"
+
+    @abstractmethod  # any subclass of Event must implement the run method, or it will raise an error at instantiation.
+    def run(self):
+        pass
 
 
 class MakeSample(Event):
     def __init__(self, sample_name: str, container: cont.Container, components: list):
         super().__init__()
+
+        if container.content:  # if container is not empty, event is not instantiated
+            raise ValueError(
+                "The chosen container is not empty, please choose another one."
+            )
+
         self.sample_name = sample_name
         self.container = container
         self.components = components
 
-    @property
-    def container(self):
-        return self._container
-
-    @container.setter
-    def container(self, value):
-        if not isinstance(value, cont.Container):
-            raise TypeError("The container should be of Container class")
-        self._container = value
-
     def run(self):
-        if self.container.content:
-            print("The chosen container is not empty, please choose another one")
-        elif self.status == "completed":
-            print("This event has already been completed")
+        if self.status == "Completed":
+            raise RuntimeError("This event has already been completed")
         else:
             sample = samp.Sample(
                 self.sample_name, self.components, self.container, is_template=False

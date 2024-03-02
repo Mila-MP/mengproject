@@ -10,7 +10,7 @@ def main():
     comp = [component1, component2]
     event1 = ev.MakeSample("make sample", bowl, comp)
     event1.run()
-    print(bowl.content[0].components)
+    print(bowl.content)
     print(event1.status)
 
 

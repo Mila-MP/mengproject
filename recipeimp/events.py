@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
 from . import containers as cont
-from . import sample as samp
+from . import samples as samp
+from . import instruments as inst
 
 
 class Event(ABC):
@@ -36,3 +37,14 @@ class MakeSample(Event):
             container_content = self.container.content
             container_content.append(sample)
             self.status = "Completed"
+
+
+class Mix(Event):
+    def __init__(self, mixer_bowl: cont.MixerBowl, mixer: inst.Mixer, sample_name: str):
+        super().__init__()
+        self.mixer_bowl = mixer_bowl
+        self.mixer = mixer
+        self.sample_name = sample_name
+
+    def run(self):
+        pass

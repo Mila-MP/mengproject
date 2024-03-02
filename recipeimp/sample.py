@@ -3,7 +3,7 @@ from . import containers as cont
 
 
 @dataclass
-class Components:
+class Component:
     name: str
     quantity: float
     unit: str

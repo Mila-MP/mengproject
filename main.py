@@ -5,8 +5,8 @@ import recipeimp.sample as samp
 
 def main():
     bowl = cont.Container("Bowl", 500)
-    component1 = samp.Components("water", 250, "mL")
-    component2 = samp.Components("salt", 2, "g")
+    component1 = samp.Component("water", 250, "mL")
+    component2 = samp.Component("salt", 2, "g")
     comp = [component1, component2]
     event1 = ev.MakeSample("make sample", bowl, comp)
     event1.run()

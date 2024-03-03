@@ -3,7 +3,7 @@ from . import containers as cont
 
 
 @dataclass
-class Components:
+class Component:
     name: str
     quantity: float
     unit: str
@@ -25,6 +25,7 @@ class Sample:
             if container is None:
                 raise ValueError("Physical samples require a container.")
             self.container = container
+            self.container.content.append(self)
         else:  # If sample is a template
             if container is not None:
                 raise ValueError("Template samples should not have a container.")

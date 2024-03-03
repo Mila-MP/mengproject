@@ -31,11 +31,9 @@ class MakeSample(Event):
         if self.status == "Completed":
             raise RuntimeError("This event has already been completed")
         else:
-            sample = samp.Sample(
+            samp.Sample(
                 self.sample_name, self.components, self.container, is_template=False
             )
-            container_content = self.container.content
-            container_content.append(sample)
             self.status = "Completed"
 
 
@@ -47,4 +45,22 @@ class Mix(Event):
         self.sample_name = sample_name
 
     def run(self):
-        pass
+        if self.status == "Completed":
+            raise RuntimeError("This event has already been completed")
+        else:
+            content = self.mixer_bowl.content  # List of components and samples
+            new_sample_components = list()
+            for element in content:
+                if isinstance(element, samp.Sample):
+                    for x in element.components:
+                        new_sample_components.append(x)
+                if isinstance(element, samp.Component):
+                    new_sample_components.append(element)
+            self.mixer_bowl.content.clear()
+            samp.Sample(
+                self.sample_name,
+                new_sample_components,
+                self.mixer_bowl,
+                is_template=False,
+            )
+            self.status = "Completed"

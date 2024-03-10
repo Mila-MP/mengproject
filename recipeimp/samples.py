@@ -28,14 +28,16 @@ class Component:
 class Sample:
     """A mixture of components.
 
-    A sample consists of a mixture of components. It can be a physical sample (is_template=False)
-    or a template sample (is_template=True). Physical samples need a container as they represent
-    a physical item.
+    A sample consists of a mixture of components. It can be a physical
+    sample (is_template=False) or a template sample (is_template=True).
+    Physical samples need a container as they represent a physical item.
 
     Attributes:
         name: a string indicating the name of the sample.
-        components: a list of Component objects indicating the components in the sample.
-        container: a Container object indicating the vessel of the sample if is_template=False.
+        components: a list of Component objects indicating the
+        components in the sample.
+        container: a Container object indicating the vessel of the sample
+        if is_template=False.
         is_template: boolean indicating if the sample is a template or not.
     """
 
@@ -43,7 +45,7 @@ class Sample:
         self,
         name: str,
         components: list,
-        container: cont.Container = None,
+        container: "cont.Container" = None,
         is_template: bool = False,
     ):
         self.name = name
@@ -53,9 +55,15 @@ class Sample:
         if not self.is_template:  # If sample is physical
             if container is None:
                 raise ValueError("Physical samples require a container.")
+            if container.get_content():
+                raise ValueError("The container should be empty")
             self.container = container
             self.container.content.append(self)
         else:  # If sample is a template
             if container is not None:
                 raise ValueError("Template samples should not have a container.")
             self.container = None
+
+    def get_components(self):
+        """Returns the components attribute of the sample (list)"""
+        return self.components

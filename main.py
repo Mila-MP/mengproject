@@ -15,26 +15,27 @@ def main():
     comp_step1 = [banana, berries, orange_juice]
 
     # Step 1: Mix banana, berries, and orange juice to obtain Step 1 sample
-    mixer_bowl1.content = (
-        comp_step1  # Add banana, berries, and orange juice to mixer bowl
-    )
+    mixer_bowl1.append_content(
+        comp_step1
+    )  # Add banana, berries, and orange juice to mixer bowl
+
     print("Content of Mixer bowl 1 before running step 1:")
-    print(mixer_bowl1.content)  # Contains individual components
+    print(mixer_bowl1.get_content())  # Contains individual components
 
     step1 = ev.Mix(mixer_bowl1, mixer1, "Step 1 sample")
     step1.run()  # Mix the ingredients to obtain Step 1 sample
     print("Content of Mixer bowl 1 after running step 1:")
-    print(mixer_bowl1.content)  # Contains Step 1 sample
+    print(mixer_bowl1.get_content())  # Contains Step 1 sample
 
     # Step 2: Add honey and mix again to obtain Step 2 sample
-    mixer_bowl1.content.append(honey)  # Add honey to mixer bowl
+    mixer_bowl1.append_content(honey)  # Add honey to mixer bowl
     print("Content of Mixer bowl 1 before running step 2:")
-    print(mixer_bowl1.content)  # Contains Step 1 sample and honey component
+    print(mixer_bowl1.get_content())  # Contains Step 1 sample and honey component
 
     step2 = ev.Mix(mixer_bowl1, mixer1, "Step 2 sample")
     step2.run()  # Mix the ingredients to obtain step 2 sample
     print("Content of Mixer bowl 1 after running step 2:")
-    print(mixer_bowl1.content)  # Contains Step 2 sample
+    print(mixer_bowl1.get_content())  # Contains Step 2 sample
 
 
 if __name__ == "__main__":

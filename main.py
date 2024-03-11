@@ -37,6 +37,28 @@ def main():
     print("Content of Mixer bowl 1 after running step 2:")
     print(mixer_bowl1.get_content())  # Contains Step 2 sample
 
+    print(100 * "=")
+
+    # Testing Transfer class
+    original_container = cont.MixerBowl("original container", 500)
+    recipient_container = cont.MixerBowl("recipient container", 500)
+    test_sample = samp.Sample(
+        "test sample", [banana, berries], original_container, False
+    )
+    transfer = ev.Transfer(test_sample, recipient_container)
+
+    print("Content of original container before transfer:")
+    print(original_container.get_content())
+    print("Content of recipient container before transfer:")
+    print(recipient_container.get_content())
+
+    transfer.run()
+
+    print("Content of original container after transfer:")
+    print(original_container.get_content())
+    print("Content of recipient container after transfer:")
+    print(recipient_container.get_content())
+
 
 if __name__ == "__main__":
     main()

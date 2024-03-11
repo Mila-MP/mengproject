@@ -21,12 +21,15 @@ class Event(ABC):
     Attributes:
         status: a string indicating the status of the event
         ("Instatiated", "Completed"...).
+
+    Methods:
+        run: abstract method that models the execution of the event.
     """
 
     def __init__(self):
         self.status = "Instantiated"
 
-    @abstractmethod  # subclasses of Event must implement run method
+    @abstractmethod
     def run(self):
         """Models the execution of the event"""
 
@@ -39,13 +42,15 @@ class Mix(Event):
     whose content attribute holds the input components and/or samples.
     The new sample's container is the inputted mixer bowl.
 
-    Attribute:
+    Attributes:
         status: a string indicating the status of the event
         ("Instatiated", "Completed"...).
         mixer_bowl: a MixerBowl object containing the input components and/or samples.
         mixer: a Mixer object indicating on which mixer the event is run.
         sample_name: a string indicating the name of the sample to be created.
 
+    Methods:
+        run: executes the Mix event.
     """
 
     def __init__(self, mixer_bowl: cont.MixerBowl, mixer: inst.Mixer, sample_name: str):
@@ -67,7 +72,7 @@ class Mix(Event):
             is already "completed".
         """
         if self.status == "Completed":
-            raise RuntimeError("This event has already been completed")
+            raise RuntimeError("This event has already been completed.")
         content = self.mixer_bowl.get_content()  # List of components and samples
         new_sample_components = []
         for element in content:
@@ -83,4 +88,58 @@ class Mix(Event):
             self.mixer_bowl,
             is_template=False,
         )
+        self.status = "Completed"
+
+
+class Transfer(Event):
+    """Transfers a sample from its original container to another.
+
+    Attributes:
+        status: a string indicating the status of the event
+        ("Instatiated", "Completed"...).
+        sample: the Sample object to be transferred.
+        recipient: empty Container object to which the sample will be transferred to.
+
+    Methods:
+        run: executes the Transfer event.
+    """
+
+    def __init__(self, sample: samp.Sample, recipient: cont.Container):
+        super().__init__()
+
+        # Check that sample is a Sample object
+        if not isinstance(sample, samp.Sample):
+            raise TypeError("The sample argument should be of type Sample.")
+        self.sample = sample
+
+        # Check that recipient is empty
+        if recipient.get_content():
+            raise ValueError("The recipient container is not empty.")
+        self.recipient = recipient
+
+    def run(self):
+        """Transfer the sample to the new recipient.
+
+        Raises:
+            RuntimeError: The Transfer event cannot be run if its status
+            is already "completed".
+        """
+        if self.status == "Completed":
+            raise RuntimeError("This event has already been completed.")
+
+        # Extract original container from sample
+        orig_container = self.sample.container
+
+        # Check that original container only contains the sample to be transferred
+        orig_container_content = orig_container.get_content()
+        if orig_container_content != [self.sample]:
+            raise ValueError(
+                "The original container contains more than just the sample to be transferred."
+            )
+
+        # Transfer sample to recipient
+        self.sample.container = self.recipient
+        self.recipient.content.append(self.sample)
+        orig_container.clear_content()
+
         self.status = "Completed"

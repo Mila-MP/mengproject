@@ -18,15 +18,18 @@ class TestContainer(unittest.TestCase):
     def test_init(self):
         """Tests constructor of the Sample class"""
 
-        # Checks that ValueError is raised if template sample is instantiated with container
+        # Checks that ValueError is raised if template sample
+        # is instantiated with container
         with self.assertRaises(ValueError):
             samp.Sample("test sample", [self.butter, self.eggs], self.mixer_bowl, True)
 
-        # Checks that ValueError is raised if physical sample is instantiated without container
+        # Checks that ValueError is raised if physical sample
+        # is instantiated without container
         with self.assertRaises(ValueError):
             samp.Sample("test sample", [self.butter, self.eggs], None, False)
 
-        # Checks that ValueError is raised if physical sample is instantiated with non-empty container
+        # Checks that ValueError is raised if physical sample
+        # is instantiated with non-empty container
         with self.assertRaises(ValueError):
             self.mixer_bowl.append_content([self.butter, self.eggs])
             samp.Sample("test sample", [self.flour, self.sugar], self.mixer_bowl, False)

@@ -45,12 +45,14 @@ class TestContainer(unittest.TestCase):
         expected_content = [self.butter, self.eggs, self.sugar]
         self.assertEqual(self.mixer_bowl_1.get_content(), expected_content)
 
-        # Test with empty container and several component input (i.e. list of components)
+        # Test with empty container and several component input
+        # (i.e. list of components)
         self.mixer_bowl_3.clear_content()
         self.mixer_bowl_3.append_content([self.butter, self.eggs])
         self.assertEqual(self.mixer_bowl_3.get_content(), [self.butter, self.eggs])
 
-        # Test with non-empty container and several component input (i.e. list of components)
+        # Test with non-empty container and several component input
+        # (i.e. list of components)
         self.mixer_bowl_3.append_content([self.flour, self.sugar])
         expected_content = [self.butter, self.eggs, self.flour, self.sugar]
         self.assertEqual(self.mixer_bowl_3.get_content(), expected_content)

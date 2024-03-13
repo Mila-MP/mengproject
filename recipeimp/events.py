@@ -91,26 +91,84 @@ class Mix(Event):
         self.status = "Completed"
 
 
+# class Transfer(Event):
+#     """Transfers a sample from its original container to another.
+
+#     Attributes:
+#         status: a string indicating the status of the event
+#         ("Instatiated", "Completed"...).
+#         sample: the Sample object to be transferred.
+#         recipient: empty Container object to which the sample will be transferred to.
+
+#     Methods:
+#         run: executes the Transfer event.
+#     """
+
+#     def __init__(self, sample: samp.Sample, recipient: cont.Container):
+#         super().__init__()
+
+#         # Check that sample is a Sample object
+#         if not isinstance(sample, samp.Sample):
+#             raise TypeError("The sample argument should be of type Sample.")
+#         self.sample = sample
+
+#         # Check that recipient is empty
+#         if recipient.get_content():
+#             raise ValueError("The recipient container is not empty.")
+#         self.recipient = recipient
+
+#     def run(self):
+#         """Transfer the sample to the new recipient.
+
+#         Raises:
+#             RuntimeError: The Transfer event cannot be run if its status
+#             is already "completed".
+#         """
+#         if self.status == "Completed":
+#             raise RuntimeError("This event has already been completed.")
+
+#         # Extract original container from sample
+#         orig_container = self.sample.container
+
+#         # Check that original container only contains the sample to be transferred
+#         orig_container_content = orig_container.get_content()
+#         if orig_container_content != [self.sample]:
+#             raise ValueError(
+#                 "The original container contains more than just the sample to be transferred."
+#             )
+
+#         # Transfer sample to recipient
+#         self.sample.container = self.recipient
+#         self.recipient.content.append(self.sample)
+#         orig_container.clear_content()
+
+#         self.status = "Completed"
+
+
 class Transfer(Event):
     """Transfers a sample from its original container to another.
 
     Attributes:
         status: a string indicating the status of the event
         ("Instatiated", "Completed"...).
-        sample: the Sample object to be transferred.
+        orig_container: Container object only containing the sample to be transferred
         recipient: empty Container object to which the sample will be transferred to.
 
     Methods:
         run: executes the Transfer event.
     """
 
-    def __init__(self, sample: samp.Sample, recipient: cont.Container):
+    def __init__(self, orig_container: cont.Container, recipient: cont.Container):
         super().__init__()
 
-        # Check that sample is a Sample object
-        if not isinstance(sample, samp.Sample):
-            raise TypeError("The sample argument should be of type Sample.")
-        self.sample = sample
+        # Check that original container only contains one sample
+        if not orig_container.get_content():
+            raise ValueError("The original container is empty")
+        if len(orig_container.get_content()) != 1:
+            raise ValueError("The original container contains more that one element")
+        elif not isinstance(orig_container.get_content()[0], samp.Sample):
+            raise ValueError("The content of the container is not a sample object")
+        self.orig_container = orig_container
 
         # Check that recipient is empty
         if recipient.get_content():
@@ -127,19 +185,12 @@ class Transfer(Event):
         if self.status == "Completed":
             raise RuntimeError("This event has already been completed.")
 
-        # Extract original container from sample
-        orig_container = self.sample.container
-
-        # Check that original container only contains the sample to be transferred
-        orig_container_content = orig_container.get_content()
-        if orig_container_content != [self.sample]:
-            raise ValueError(
-                "The original container contains more than just the sample to be transferred."
-            )
+        # Extract sample from original container
+        sample = self.orig_container.get_content()[0]
 
         # Transfer sample to recipient
-        self.sample.container = self.recipient
-        self.recipient.content.append(self.sample)
-        orig_container.clear_content()
+        sample.container = self.recipient
+        self.recipient.content.append(sample)
+        self.orig_container.clear_content()
 
         self.status = "Completed"

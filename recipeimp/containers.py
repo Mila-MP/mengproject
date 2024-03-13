@@ -59,3 +59,11 @@ class MixerBowl(Container):
         super().__init__()
         self.name = name
         self.volume = volume
+
+
+class Tube(Container):
+
+    def __init__(self, name: str, volume: float):
+        super().__init__()
+        self.name = name
+        self.volume = volume

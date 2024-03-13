@@ -85,7 +85,12 @@ class TestTransfer(unittest.TestCase):
         test_sample = samp.Sample(
             "test sample", [butter, eggs], original_container, False
         )
-        transfer = ev.Transfer(test_sample, recipient_container)
+        transfer = ev.Transfer(original_container, recipient_container)
+
         transfer.run()
+        # Check that original container is now empty
         self.assertEqual(original_container.get_content(), [])
+        # Check that recipient container contains the sample
         self.assertEqual(recipient_container.get_content(), [test_sample])
+        # Check that the container of the sample is the recipient
+        self.assertEqual(test_sample.container, recipient_container)

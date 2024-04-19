@@ -1,8 +1,8 @@
 """
 Classes:
 - Event (Parent class)
-- MakeSample (Child class)
 - Mix (Child class)
+- Transfer (Child class)
 """
 
 from abc import ABC, abstractmethod

@@ -1,0 +1,17 @@
+{% extends "base2.html" %}
+
+{% block title %}Title{% endblock %}
+
+{% block content %}
+<h1>Create Workflow</h1>
+    <form method="post" action="{% url 'create_workflow_page' %}">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="input-group mb-1">
+            <span class="input-group-text" style="min-width: 120px;">{{ field.label_tag }}</span>
+            {{ field }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Next</button>
+    </form>
+{% endblock %}

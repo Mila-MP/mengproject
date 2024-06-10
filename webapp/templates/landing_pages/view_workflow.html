@@ -1,0 +1,90 @@
+{% extends "base2.html" %}
+
+{% block title %}title{% endblock %}
+
+{% block content %}
+<h1>Instantiated Workflows</h1>
+<table class="table table-hover">
+    <thead class=table-primary>
+        <tr>
+            <th scope="col">Workflow name</th>
+            <th scope="col"> Created by </th>
+            <th scope="col"> Time Created </th>
+            <th scope="col"> </th>
+            <th scope="col"> </th>
+            <th scope="col"> </th>
+    </thead>
+    <tbody>
+        {% for workflow in workflows %}
+            <tr>
+                <td>{{ workflow.workflow_name }}</td>
+                <td>{{ workflow.created_by }}</td>
+                <td>{{ workflow.date_created }}</td>
+                <td><a href="{% url 'view_workflow_page' %}">View</a></td>
+                <td><a href="{% url 'view_workflow_page' %}">Edit</a></td>
+                <td><a href="{% url 'view_workflow_page' %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h3>Bacterial Transformation 1</h3>
+<table class="table table-striped">
+    <thead class=table-primary>
+        <tr>
+            <th scope="col">Action name</th>
+            <th scope="col"> Action type </th>
+            <th scope="col"> Description </th>
+            <th scope="col"> </th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Thaw competent cells</td>
+            <td>Thaw</td>
+            <td>Thaw competent cells on ice</td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+        <tr>
+            <td>Prepare transformation mix</td>
+            <td>Perpare mix</td>
+            <td>Mix DNA and competent cells</td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+        <tr>
+            <td>Incubate on ice</td>
+            <td>Incubate</td>
+            <td>Incubate the competent cell/DNA mix on ice</td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+        <tr>
+            <td>Heat shock</td>
+            <td>Heat shock</td>
+            <td>Heat shock by placing mix in water bath</td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+        <tr>
+            <td>Incubate on ice</td>
+            <td>Incubate</td>
+            <td>Incubate mix on ice </td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+        <tr>
+            <td>Add SOC media</td>
+            <td>Add</td>
+            <td>Add SOC media to the mix</td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+        <tr>
+            <td>Shake and Incubate</td>
+            <td>Shake and Incubate</td>
+            <td>Shake and incubate the mix in shaking incubator</td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+        <tr>
+            <td>Incubate overnight</td>
+            <td>Incubate</td>
+            <td>Incubate plates overnight</td>
+            <td><a href="{% url 'view_workflow_page' %}">View action parameters</a></td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
